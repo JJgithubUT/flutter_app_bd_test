@@ -19,7 +19,7 @@ class MongoService {
   Future<void> connect() async {
     try {
       _db = await mongo.Db.create(
-        'mongodb://<user>:<password>@'
+        'mongodb+srv://juanjcbreton:Mmrckfv3CMFriMqK@cluster0.5zevd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
       );
       await _db.open();
       _db.databaseName = 'productos';
