@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'package:flutter_app_bd_1/models/phone_model.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 class MongoService {
-  // Servicio para conectar con mongoDB Atlas usando Sigletown
+  // Servicio para conectar con MongoDB Atlas
+  // Usando Singleton
   static final MongoService _instance = MongoService._internal();
 
   late mongo.Db _db;
@@ -15,23 +17,58 @@ class MongoService {
   }
 
   Future<void> connect() async {
-    await dotenv.load(fileName: ".env");
-    final mongoUri = dotenv.env['MONGO_URI'];
-    _db = await mongo.Db.create(mongoUri!);
-    await _db.open();
+    try {
+      _db = await mongo.Db.create(
+        'mongodb://<user>:<password>@'
+      );
+      await _db.open();
+      _db.databaseName = 'productos';
+      print('Conexión a MongoDB establecida.');
+    } on SocketException catch (e) {
+      print('Error de conexión: $e');
+    rethrow; // Vuelve a lanzar la excepción después de imprimir el mensaje
+  }
   }
 
   mongo.Db get db {
-    if ( !db.isConnected ) {
-      throw StateError('Base De Datos No Inicializada, llama a connect() primero');
+    if (!db.isConnected) {
+      throw StateError('DB no inicializa, llamar a connect()');
     }
     return _db;
   }
 
-  Future<List<PhoneModel>> getCelulares() async {
+  Future<List<PhoneModel>> getPhones() async {
     final collection = _db.collection('celulares');
+    print('Colección obtenida: $collection');
     var phones = await collection.find().toList();
+    print('En MongoService: $phones');
+    if (phones.isEmpty) {
+      print('No se encontraron datos en la colección.');
+    }
     return phones.map((phone) => PhoneModel.fromJson(phone)).toList();
   }
 
+  Future<void> insertPhone(PhoneModel phone) async {
+    final collection = _db.collection('celulares');
+    await collection.insertOne(phone.toJson());
+  }
+
+  Future<void> updatePhone(PhoneModel phone) async {
+    final collection = _db.collection('celulares');
+    await collection.updateOne(
+      mongo.where.eq('_id', phone.id),
+      mongo.modify.set('marca', phone.marca).set('modelo', phone.modelo).set('existencia', phone.existencia).set('precio', phone.precio)
+    );
+  }
+
+  Future<void> deletePhone(mongo.ObjectId id) async {
+    var collection = _db.collection('celulares');
+    await collection.remove(
+      mongo.where.eq('_id', id),
+    );
+  }
+
+  
+
 }
+        
