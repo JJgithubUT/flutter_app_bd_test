@@ -50,7 +50,7 @@ class MongoService {
 
   Future<void> insertPhone(PhoneModel phone) async {
     final collection = _db.collection('celulares');
-    await collection.insertOne(phone.toJson());
+    await collection.insertOne( phone.toJson() );
   }
 
   Future<void> updatePhone(PhoneModel phone) async {
@@ -68,6 +68,9 @@ class MongoService {
     );
   }
 
+  void close() {
+    _db.close();
+  }
   
 
 }
