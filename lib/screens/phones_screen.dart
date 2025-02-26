@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_bd_1/models/phone_model.dart';
-import 'package:flutter_app_bd_1/services/insert_phone_screen.dart';
+import 'package:flutter_app_bd_1/screens/insert_phone_screen.dart';
 import 'package:flutter_app_bd_1/services/mongo_service.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
@@ -150,7 +150,10 @@ class _PhoneScreenState extends State<PhoneScreen> {
   ListTile oneTile(PhoneModel phone) {
     return ListTile(
       leading: const Icon(Icons.phone_android),
-      title: Text(phone.marca),
+      title: Text(
+        phone.marca,
+        style: Theme.of(context).textTheme.headlineSmall,
+        ),
       subtitle: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
