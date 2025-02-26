@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 ThemeData tema1() {
   return ThemeData(
-    scaffoldBackgroundColor: Color(0xFF1E1E1E), // Dark grey background
+    
+    // color base
+    scaffoldBackgroundColor: Color.fromARGB(255, 157, 157, 157), // Dark grey background
     primaryColor: Color.fromARGB(255, 50, 92, 139), // Deep Purple
+
+    // el appbar
     appBarTheme: AppBarTheme(
       backgroundColor: Color.fromARGB(255, 50, 92, 139),
-      titleTextStyle: TextStyle(
+      titleTextStyle: GoogleFonts.roboto(
         color: Colors.white,
         fontSize: 24,
       ),
@@ -34,5 +39,13 @@ ThemeData tema1() {
         fontSize: 14,
       )
     ),
+
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.amber,
+        foregroundColor: Colors.black,
+      ),
+    ),
+
   );
 }
