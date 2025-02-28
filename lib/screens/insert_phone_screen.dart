@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_bd_1/models/phone_model.dart';
-import 'package:flutter_app_bd_1/services/mongo_service.dart';
+import 'package:flutter_app_bd_1/services/phone_service.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 class InsertPhoneScreen extends StatefulWidget {
@@ -42,7 +42,7 @@ class _InsertPhoneScreenState extends State<InsertPhoneScreen> {
       existencia: int.parse(_existenciaController.text),
       precio: double.parse(_precioController.text)
     );
-    await MongoService().insertPhone(phone);
+    await PhoneService().insertPhone(phone);
     if ( !mounted ) return;
     Navigator.of(context).pop();
   }

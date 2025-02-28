@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_bd_1/models/phone_model.dart';
 import 'package:flutter_app_bd_1/screens/insert_phone_screen.dart';
-import 'package:flutter_app_bd_1/services/mongo_service.dart';
+import 'package:flutter_app_bd_1/services/phone_service.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 
@@ -65,22 +65,23 @@ class _PhoneScreenState extends State<PhoneScreen> {
         ],
       ),
       body: ListView.builder(
-          itemCount: phones.length,
-          itemBuilder: (context, index) {
-            var phone = phones[index];
-            return oneTile(phone);
-          }),
+        itemCount: phones.length,
+        itemBuilder: (context, index) {
+          var phone = phones[index];
+          return oneTile(phone);
+        },
+      ),
     );
   }
 
   void _fetchPhones() async {
-    phones = await MongoService().getPhones();
+    phones = await PhoneService().getPhones();
     print('En fetch: $phones');
     setState(() {});
   }
 
   void _updatePhone(PhoneModel phone) async {
-    await MongoService().updatePhone(phone);
+    await PhoneService().updatePhone(phone);
     _fetchPhones();
   }
 
@@ -126,7 +127,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
             ),
             TextButton(
               onPressed: () {
-                // Recuperar los hnuevos valores
+                // Recuperar los nuevos valores
                 phone.marca = _marcaController.text;
                 phone.modelo = _modeloController.text;
                 phone.existencia = int.parse(_existenciaController.text);
@@ -143,7 +144,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
   }
 
   void _deletePhone(mongo.ObjectId id) async {
-    await MongoService().deletePhone(id);
+    await PhoneService().deletePhone(id);
     _fetchPhones();
   }
 
@@ -170,7 +171,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
         children: [
           IconButton(
             onPressed: () => _showEditDialog(phone),
-            icon: Icon(Icons.edit),
+            icon: const Icon(Icons.edit),
           ),
           IconButton(
             onPressed: () {

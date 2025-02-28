@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_bd_1/screens/phones_screen.dart';
+import 'package:flutter_app_bd_1/screens/cars_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -25,8 +26,12 @@ class MainScreen extends StatelessWidget {
             child: const Text('Celulares')
           ),
           ElevatedButton(
-            onPressed: () {
-              
+            onPressed: () async {
+              await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const CarsScreen(),
+                ),
+              );
             },
             child: const Text('Electrodomesticos')
           ),
